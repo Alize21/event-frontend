@@ -10,7 +10,7 @@ const AuthLayout = ({ title, children }: PropTypes) => {
   return (
     <>
       <PageHead title={title} />
-      <section className="3xl:container p-6">{children}</section>
+      <section className="3xl:container">{children}</section>
     </>
   );
 };
