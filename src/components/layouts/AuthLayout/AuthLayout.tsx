@@ -1,17 +1,17 @@
 import PageHead from "@/components/commons/PageHead";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 
 interface PropTypes {
-  title?: string;
   children: ReactNode;
+  title?: string;
 }
 
-const AuthLayout = ({ title, children }: PropTypes) => {
+const AuthLayout = ({ children, title }: PropTypes) => {
   return (
-    <>
+    <Fragment>
       <PageHead title={title} />
       <section className="3xl:container">{children}</section>
-    </>
+    </Fragment>
   );
 };
 export default AuthLayout;
