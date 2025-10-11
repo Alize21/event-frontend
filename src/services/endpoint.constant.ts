@@ -1,5 +1,7 @@
+import environment from "@/config/environment";
+
 const endpoint = {
-  AUTH: `${process.env.NEXT_PUBLIC_API_URL}/auth`,
+  AUTH: `${environment.API_URL}/auth`,
 };
 
 export default endpoint;
