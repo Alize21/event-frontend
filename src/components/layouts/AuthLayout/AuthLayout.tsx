@@ -1,5 +1,5 @@
 import PageHead from "@/components/commons/PageHead";
-import { Fragment, ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface PropTypes {
   children: ReactNode;
@@ -8,10 +8,10 @@ interface PropTypes {
 
 const AuthLayout = ({ children, title }: PropTypes) => {
   return (
-    <Fragment>
+    <div className="flex min-h-screen min-w-full flex-col items-center justify-center gap-10 py-10 lg:py-0">
       <PageHead title={title} />
       <section className="3xl:container">{children}</section>
-    </Fragment>
+    </div>
   );
 };
 export default AuthLayout;
