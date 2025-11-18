@@ -22,6 +22,7 @@ const useAddCategoryModal = () => {
     mutateDeleteFile,
     isPendingMutateDeleteFile,
   } = useMediaHandling();
+
   const {
     control,
     handleSubmit: handleSubmitForm,
