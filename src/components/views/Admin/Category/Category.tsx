@@ -15,31 +15,26 @@ import { COLUMN_LISTS_CATEGORY } from "./Category.constants";
 import useCategory from "./useCategory";
 import AddCategoryModal from "./AddCategoryModal";
 import DeleteCategoryModal from "./DeleteCategoryModal";
+import useChangeUrl from "@/hooks/useChangeUrl";
 
 const Category = () => {
   const { push, isReady, query } = useRouter();
   const {
-    setURL,
     dataCategory,
     refetchCategory,
     isRefetchingCategory,
     isLoadingCategory,
-    currentPage,
-    currentLimit,
-    handleChangeLimit,
-    handleChangePage,
-    handleSearch,
-    handleClearSearch,
     selectedId,
     setSelectedId,
   } = useCategory();
 
   const addCategoryModal = useDisclosure();
   const deleteCategoryModal = useDisclosure();
+  const { setUrl } = useChangeUrl();
 
   useEffect(() => {
-    if (isReady) setURL();
-  }, [isReady, setURL]);
+    if (isReady) setUrl();
+  }, [isReady, setUrl]);
 
   const renderCell = useCallback(
     (category: Record<string, unknown>, columnKey: Key) => {
@@ -91,15 +86,9 @@ const Category = () => {
         <DataTable
           renderCell={renderCell}
           columns={COLUMN_LISTS_CATEGORY}
-          currentPage={Number(currentPage)}
           data={dataCategory?.data || []}
           emptyContent="No categories found."
-          limit={String(currentLimit)}
           isLoading={isLoadingCategory || isRefetchingCategory}
-          onChangeLimit={handleChangeLimit}
-          onChangePage={handleChangePage}
-          onChangeSearch={handleSearch}
-          onClearSearch={handleClearSearch}
           buttonTopContentLabel="Add Category"
           onClickButtonTopContent={addCategoryModal.onOpen}
           totalPages={dataCategory?.pagination.totalPages}
