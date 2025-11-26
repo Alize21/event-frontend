@@ -1,26 +1,42 @@
+import { DELAY } from "@/constants/list.constants";
 import { ToasterContext } from "@/contexts/ToasterContext";
+import useDebounce from "@/hooks/useDebounce";
 import useMediaHandling from "@/hooks/useMediaHandling";
 import categoryServices from "@/services/category.service";
+import eventServices from "@/services/event.service";
 import { ICategory } from "@/types/Category";
+import { DateValue } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Input category name"),
-  description: yup.string().required("Input category description"),
-  icon: yup.mixed<FileList | string>().required("Input category icon"),
+  name: yup.string().required("Input event name"),
+  slug: yup.string().required("Input event slug"),
+  category: yup.string().required("Input event parent"),
+  startDate: yup.mixed<DateValue>().required("Input event start date"),
+  endDate: yup.mixed<DateValue>().required("Input event end date"),
+  isPublished: yup.string().required("Select event publish status"),
+  isFeatured: yup.string().required("Select event featured status"),
+  description: yup.string().required("Input event description"),
+  isOnline: yup.string().required("Select event online status"),
+  region: yup.string().required("Input event region"),
+  latitude: yup.string().required("Input event latitude coordinate"),
+  longitude: yup.string().required("Input event longitude coordinate"),
+  banner: yup.mixed<FileList | string>().required("Input event banner"),
 });
 
-const useAddCategoryModal = () => {
+const useAddEventModal = () => {
   const { setToaster } = useContext(ToasterContext);
+  const debounce = useDebounce();
   const {
     isPendingMutateUploadFile,
-    isPendingMutateDeleteFile,
     handleUploadFile,
     handleDeleteFile,
+    isPendingMutateDeleteFile,
   } = useMediaHandling();
 
   const {
@@ -35,21 +51,21 @@ const useAddCategoryModal = () => {
     resolver: yupResolver(schema),
   });
 
-  const preview = watch("icon");
-  const fileUrl = getValues("icon");
+  const preview = watch("banner");
+  const fileUrl = getValues("banner");
 
-  const handleUploadIcon = (
+  const handleUploadBanner = (
     files: FileList,
     onChange: (files: FileList | undefined) => void,
   ) => {
     handleUploadFile(files, onChange, (fileUrl: string | undefined) => {
       if (fileUrl) {
-        setValue("icon", fileUrl);
+        setValue("banner", fileUrl);
       }
     });
   };
 
-  const handleDeleteIcon = (
+  const handleDeleteBanner = (
     onChange: (files: FileList | undefined) => void,
   ) => {
     handleDeleteFile(fileUrl, () => onChange(undefined));
@@ -60,6 +76,24 @@ const useAddCategoryModal = () => {
       reset();
       onClose();
     });
+  };
+
+  const { data: dataCategory } = useQuery({
+    queryKey: ["Categories"],
+    queryFn: () => categoryServices.getCategories(),
+    enabled: true,
+  });
+
+  const [searchRegency, setSearchRegency] = useState("");
+
+  const { data: dataRegion } = useQuery({
+    queryKey: ["regions", searchRegency],
+    queryFn: () => eventServices.searchLocationByRegency(`${searchRegency}`),
+    enabled: searchRegency !== "",
+  });
+
+  const handleSearchRegency = (region: string) => {
+    debounce(() => setSearchRegency(region), DELAY);
   };
 
   const addCategory = async (payload: ICategory) => {
@@ -100,12 +134,16 @@ const useAddCategoryModal = () => {
     isPendingMutateAddCategory,
     isSuccessMutateAddCategory,
     preview,
-    handleUploadIcon,
+    handleUploadBanner,
     isPendingMutateUploadFile,
-    handleDeleteIcon,
+    handleDeleteBanner,
     isPendingMutateDeleteFile,
     handleOnClose,
+    dataCategory,
+    handleSearchRegency,
+    searchRegency,
+    dataRegion,
   };
 };
 
-export default useAddCategoryModal;
+export default useAddEventModal;

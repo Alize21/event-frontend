@@ -4,15 +4,20 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Key, ReactNode, useCallback, useEffect } from "react";
 import { COLUMN_LISTS_EVENT } from "./Event.constants";
-
 import useChangeUrl from "@/hooks/useChangeUrl";
 import useEvent from "./useEvent";
 import DropdownAction from "@/components/commons/DropdownAction";
+import AddEventModal from "./AddEventModal";
 
-const Category = () => {
+const Event = () => {
   const { push, isReady, query } = useRouter();
-  const { dataEvents, isRefetchingEvents, isLoadingEvents, setSelectedId } =
-    useEvent();
+  const {
+    dataEvents,
+    isRefetchingEvents,
+    isLoadingEvents,
+    setSelectedId,
+    refetchEvents,
+  } = useEvent();
 
   const { setUrl } = useChangeUrl();
 
@@ -79,8 +84,9 @@ const Category = () => {
           totalPages={dataEvents?.pagination.totalPages}
         />
       )}
+      <AddEventModal refetchEvents={refetchEvents} {...addEventModal} />
     </section>
   );
 };
 
-export default Category;
+export default Event;
