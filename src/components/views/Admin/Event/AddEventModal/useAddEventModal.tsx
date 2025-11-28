@@ -4,11 +4,12 @@ import useDebounce from "@/hooks/useDebounce";
 import useMediaHandling from "@/hooks/useMediaHandling";
 import categoryServices from "@/services/category.service";
 import eventServices from "@/services/event.service";
-import { ICategory } from "@/types/Category";
+import { IEvent, IEventForm } from "@/types/Event";
+import { toDateStandard } from "@/utils/date";
 import { DateValue } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { getLocalTimeZone, now } from "@internationalized/date";
 import { useMutation, useQuery } from "@tanstack/react-query";
-
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -49,6 +50,10 @@ const useAddEventModal = () => {
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      startDate: now(getLocalTimeZone()),
+      endDate: now(getLocalTimeZone()),
+    },
   });
 
   const preview = watch("banner");
@@ -96,18 +101,18 @@ const useAddEventModal = () => {
     debounce(() => setSearchRegency(region), DELAY);
   };
 
-  const addCategory = async (payload: ICategory) => {
-    const res = await categoryServices.addCategory(payload);
+  const addEvent = async (payload: IEvent) => {
+    const res = await eventServices.addEvent(payload);
 
     return res;
   };
 
   const {
-    mutate: mutateAddCategory,
-    isPending: isPendingMutateAddCategory,
-    isSuccess: isSuccessMutateAddCategory,
+    mutate: mutateAddEvent,
+    isPending: isPendingMutateAddEvent,
+    isSuccess: isSuccessMutateAddEvent,
   } = useMutation({
-    mutationFn: addCategory,
+    mutationFn: addEvent,
     onError: (error) => {
       setToaster({
         type: "error",
@@ -123,16 +128,32 @@ const useAddEventModal = () => {
     },
   });
 
-  const handleAddCategory = (data: ICategory) => mutateAddCategory(data);
+  const handleAddEvent = (data: IEventForm) => {
+    const payload = {
+      ...data,
+      isFeatured: Boolean(data.isFeatured),
+      isPublished: Boolean(data.isFeatured),
+      isOnline: Boolean(data.isOnline),
+      startDate: toDateStandard(data.startDate),
+      endDate: toDateStandard(data.endDate),
+      location: {
+        region: data.region,
+        coordinates: [Number(data.latitude), Number(data.longitude)],
+      },
+      banner: data.banner,
+    };
+
+    mutateAddEvent(payload);
+  };
 
   return {
     control,
     errors,
     reset,
     handleSubmitForm,
-    handleAddCategory,
-    isPendingMutateAddCategory,
-    isSuccessMutateAddCategory,
+    handleAddEvent,
+    isPendingMutateAddEvent,
+    isSuccessMutateAddEvent,
     preview,
     handleUploadBanner,
     isPendingMutateUploadFile,

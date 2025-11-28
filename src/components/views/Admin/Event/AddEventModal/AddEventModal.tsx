@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import useAddEventModal from "./useAddEventModal";
 import { ICategory } from "@/types/Category";
 import { IRegency } from "@/types/Event";
+import { getLocalTimeZone, now } from "@internationalized/date";
 
 interface PropTypes {
   isOpen: boolean;
@@ -38,9 +39,9 @@ const AddEventModal = ({
     control,
     errors,
     handleSubmitForm,
-    handleAddCategory,
-    isPendingMutateAddCategory,
-    isSuccessMutateAddCategory,
+    handleAddEvent,
+    isPendingMutateAddEvent,
+    isSuccessMutateAddEvent,
     handleUploadBanner,
     isPendingMutateUploadFile,
     preview,
@@ -54,14 +55,14 @@ const AddEventModal = ({
   } = useAddEventModal();
 
   useEffect(() => {
-    if (isSuccessMutateAddCategory) {
+    if (isSuccessMutateAddEvent) {
       onClose();
       refetchEvents();
     }
-  }, [isSuccessMutateAddCategory, onClose, refetchEvents]);
+  }, [isSuccessMutateAddEvent, onClose, refetchEvents]);
 
   const disableSubmit =
-    isPendingMutateAddCategory ||
+    isPendingMutateAddEvent ||
     isPendingMutateUploadFile ||
     isPendingMutateDeleteFile;
 
@@ -73,7 +74,7 @@ const AddEventModal = ({
       scrollBehavior="inside"
       onClose={() => handleOnClose(onClose)}
     >
-      <form onSubmit={handleSubmitForm(handleAddCategory)}>
+      <form onSubmit={handleSubmitForm(handleAddEvent)}>
         <ModalContent className="m-4">
           <ModalHeader>Add Event</ModalHeader>
           <ModalBody>
@@ -142,6 +143,10 @@ const AddEventModal = ({
                       {...field}
                       label="Start Date"
                       variant="bordered"
+                      // HeroUI date type mismatch temporary fix
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      defaultValue={now(getLocalTimeZone())}
                       hideTimeZone
                       showMonthAndYearPickers
                       isInvalid={errors.startDate !== undefined}
@@ -157,6 +162,10 @@ const AddEventModal = ({
                       {...field}
                       label="End Date"
                       variant="bordered"
+                      // HeroUI date type mismatch temporary fix
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      defaultValue={now(getLocalTimeZone())}
                       hideTimeZone
                       showMonthAndYearPickers
                       isInvalid={errors.endDate !== undefined}
@@ -181,6 +190,27 @@ const AddEventModal = ({
                       </SelectItem>
                       <SelectItem key="false" textValue="false">
                         Draft
+                      </SelectItem>
+                    </Select>
+                  )}
+                />
+                <Controller
+                  name="isOnline"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      label="Status Online"
+                      variant="bordered"
+                      isInvalid={errors.isOnline !== undefined}
+                      errorMessage={errors.isOnline?.message}
+                      disallowEmptySelection
+                    >
+                      <SelectItem key="true" textValue="true">
+                        Online
+                      </SelectItem>
+                      <SelectItem key="false" textValue="false">
+                        Offline
                       </SelectItem>
                     </Select>
                   )}
@@ -257,7 +287,7 @@ const AddEventModal = ({
                 <Controller
                   name="latitude"
                   control={control}
-                  render={({ field: { ...field } }) => (
+                  render={({ field }) => (
                     <Input
                       {...field}
                       label="Latitude"
@@ -270,7 +300,7 @@ const AddEventModal = ({
                 <Controller
                   name="longitude"
                   control={control}
-                  render={({ field: { ...field } }) => (
+                  render={({ field }) => (
                     <Input
                       {...field}
                       label="Longitude"
@@ -316,7 +346,7 @@ const AddEventModal = ({
               onPress={onClose}
               disabled={disableSubmit}
             >
-              {isPendingMutateAddCategory ? (
+              {isPendingMutateAddEvent ? (
                 <Spinner size="sm" color="white" />
               ) : (
                 "Create Event"
