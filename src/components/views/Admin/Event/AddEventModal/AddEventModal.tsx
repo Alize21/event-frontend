@@ -20,7 +20,6 @@ import { useEffect } from "react";
 import useAddEventModal from "./useAddEventModal";
 import { ICategory } from "@/types/Category";
 import { IRegency } from "@/types/Event";
-import { getLocalTimeZone, now } from "@internationalized/date";
 
 interface PropTypes {
   isOpen: boolean;
@@ -139,14 +138,13 @@ const AddEventModal = ({
                   name="startDate"
                   control={control}
                   render={({ field }) => (
+                    // HeroUI date type mismatch temporary fix
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
                     <DatePicker
                       {...field}
                       label="Start Date"
                       variant="bordered"
-                      // HeroUI date type mismatch temporary fix
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-expect-error
-                      defaultValue={now(getLocalTimeZone())}
                       hideTimeZone
                       showMonthAndYearPickers
                       isInvalid={errors.startDate !== undefined}
@@ -158,14 +156,13 @@ const AddEventModal = ({
                   name="endDate"
                   control={control}
                   render={({ field }) => (
+                    // HeroUI date type mismatch temporary fix
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
                     <DatePicker
                       {...field}
                       label="End Date"
                       variant="bordered"
-                      // HeroUI date type mismatch temporary fix
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-expect-error
-                      defaultValue={now(getLocalTimeZone())}
                       hideTimeZone
                       showMonthAndYearPickers
                       isInvalid={errors.endDate !== undefined}
