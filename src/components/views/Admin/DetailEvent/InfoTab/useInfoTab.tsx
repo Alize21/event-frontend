@@ -12,7 +12,7 @@ const schemaUpdateInfo = yup.object().shape({
   category: yup.string().required("Input event parent"),
   startDate: yup.mixed<DateValue>().required("Input event start date"),
   endDate: yup.mixed<DateValue>().required("Input event end date"),
-  isPublished: yup.string().required("Select event publish status"),
+  isPublish: yup.string().required("Select event publish status"),
   isFeatured: yup.string().required("Select event featured status"),
 });
 

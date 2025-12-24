@@ -171,21 +171,21 @@ const AddEventModal = ({
                   )}
                 />
                 <Controller
-                  name="isPublished"
+                  name="isPublish"
                   control={control}
                   render={({ field }) => (
                     <Select
                       {...field}
-                      label="Status Published"
+                      label="Status"
                       variant="bordered"
-                      isInvalid={errors.isPublished !== undefined}
-                      errorMessage={errors.isPublished?.message}
+                      isInvalid={errors.isPublish !== undefined}
+                      errorMessage={errors.isPublish?.message}
                       disallowEmptySelection
                     >
-                      <SelectItem key="true" textValue="true">
+                      <SelectItem key="true" textValue="Published">
                         Published
                       </SelectItem>
-                      <SelectItem key="false" textValue="false">
+                      <SelectItem key="false" textValue="Draft">
                         Draft
                       </SelectItem>
                     </Select>
@@ -203,10 +203,10 @@ const AddEventModal = ({
                       errorMessage={errors.isOnline?.message}
                       disallowEmptySelection
                     >
-                      <SelectItem key="true" textValue="true">
+                      <SelectItem key="true" textValue="Online">
                         Online
                       </SelectItem>
-                      <SelectItem key="false" textValue="false">
+                      <SelectItem key="false" textValue="Offline">
                         Offline
                       </SelectItem>
                     </Select>
@@ -224,10 +224,10 @@ const AddEventModal = ({
                       errorMessage={errors.isFeatured?.message}
                       disallowEmptySelection
                     >
-                      <SelectItem key="true" textValue="true">
+                      <SelectItem key="true" textValue="Yes">
                         Yes
                       </SelectItem>
-                      <SelectItem key="false" textValue="false">
+                      <SelectItem key="false" textValue="No">
                         No
                       </SelectItem>
                     </Select>
@@ -279,6 +279,19 @@ const AddEventModal = ({
                         </AutocompleteItem>
                       )}
                     </Autocomplete>
+                  )}
+                />
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      label="Address"
+                      variant="bordered"
+                      isInvalid={errors.address !== undefined}
+                      errorMessage={errors.address?.message}
+                    />
                   )}
                 />
                 <Controller

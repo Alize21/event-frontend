@@ -20,7 +20,7 @@ const schema = yup.object().shape({
   category: yup.string().required("Input event parent"),
   startDate: yup.mixed<DateValue>().required("Input event start date"),
   endDate: yup.mixed<DateValue>().required("Input event end date"),
-  isPublished: yup.string().required("Select event publish status"),
+  isPublish: yup.string().required("Select event publish status"),
   isFeatured: yup.string().required("Select event featured status"),
   description: yup.string().required("Input event description"),
   isOnline: yup.string().required("Select event online status"),
@@ -28,6 +28,7 @@ const schema = yup.object().shape({
   latitude: yup.string().required("Input event latitude coordinate"),
   longitude: yup.string().required("Input event longitude coordinate"),
   banner: yup.mixed<FileList | string>().required("Input event banner"),
+  address: yup.string().required("Input event address"),
 });
 
 const useAddEventModal = () => {
@@ -131,12 +132,10 @@ const useAddEventModal = () => {
   const handleAddEvent = (data: IEventForm) => {
     const payload = {
       ...data,
-      isFeatured: Boolean(data.isFeatured),
-      isPublished: Boolean(data.isFeatured),
-      isOnline: Boolean(data.isOnline),
       startDate: data.startDate ? toDateStandard(data.startDate) : "",
       endDate: data.endDate ? toDateStandard(data.endDate) : "",
       location: {
+        address: data.address,
         region: `${data.region}`,
         coordinates: [Number(data.latitude), Number(data.longitude)],
       },

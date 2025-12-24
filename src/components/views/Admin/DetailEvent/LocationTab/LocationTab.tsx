@@ -46,6 +46,7 @@ const LocationTab = ({
 
   useEffect(() => {
     if (dataEvent) {
+      setValueUpdateLocation("address", `${dataEvent?.location?.address}`);
       setValueUpdateLocation("isOnline", `${dataEvent?.isOnline}`);
       setValueUpdateLocation("region", `${dataEvent?.location?.region}`);
       setValueUpdateLocation(
@@ -76,6 +77,26 @@ const LocationTab = ({
           className="flex flex-col gap-4"
           onSubmit={handleSubmitUpdateLocation(onUpdate)}
         >
+          <Skeleton
+            isLoaded={!!dataEvent?.location?.address}
+            className="rounded-lg"
+          >
+            <Controller
+              name="address"
+              control={controlUpdateLocation}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Address"
+                  variant="bordered"
+                  labelPlacement="outside"
+                  type="text"
+                  isInvalid={errorsUpdateLocation.address !== undefined}
+                  errorMessage={errorsUpdateLocation.address?.message}
+                />
+              )}
+            />
+          </Skeleton>
           <Skeleton isLoaded={!!dataEvent} className="rounded-lg">
             <Controller
               name="isOnline"
