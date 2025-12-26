@@ -6,6 +6,7 @@ const endpoint = {
   MEDIA: `${environment.API_URL}/media`,
   EVENT: `${environment.API_URL}/events`,
   REGION: `${environment.API_URL}/regions`,
+  TICKET: `${environment.API_URL}/tickets`,
 };
 
 export default endpoint;
