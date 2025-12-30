@@ -8,9 +8,10 @@ import {
   CardHeader,
   useDisclosure,
 } from "@heroui/react";
-import { Key, ReactNode, useCallback } from "react";
+import { Fragment, Key, ReactNode, useCallback } from "react";
 import { COLUMN_LISTS_TICKET } from "./TicketTab.constant";
 import useTicketTab from "./useTicketTab";
+import AddTicketModal from "./AddTicketModal";
 
 const TicketTab = () => {
   const { dataTicket, refetchTicket, isPendingTicket, isRefetchingTicket } =
@@ -45,29 +46,37 @@ const TicketTab = () => {
   );
 
   return (
-    <Card className="w-full p-4">
-      <CardHeader className="items-center justify-between" onSubmit={() => {}}>
-        <div className="flex flex-col items-center">
-          <h1 className="w-full text-xl font-bold">Event Ticket</h1>
-          <p className="text-small text-default-400 w-full">
-            Manage ticket for this event
-          </p>
-        </div>
-        <Button color="danger">Add New Ticket</Button>
-      </CardHeader>
-      <CardBody className="pt-0">
-        <DataTable
-          renderCell={renderCell}
-          columns={COLUMN_LISTS_TICKET}
-          data={dataTicket || []}
-          emptyContent="No tickets found."
-          isLoading={isPendingTicket || isRefetchingTicket}
-          showSearch={false}
-          showLimit={false}
-          totalPages={1}
-        />
-      </CardBody>
-    </Card>
+    <Fragment>
+      <Card className="w-full p-4">
+        <CardHeader
+          className="items-center justify-between"
+          onSubmit={() => {}}
+        >
+          <div className="flex flex-col items-center">
+            <h1 className="w-full text-xl font-bold">Event Ticket</h1>
+            <p className="text-small text-default-400 w-full">
+              Manage ticket for this event
+            </p>
+          </div>
+          <Button color="danger" onPress={addTicketModal.onOpen}>
+            Add New Ticket
+          </Button>
+        </CardHeader>
+        <CardBody className="pt-0">
+          <DataTable
+            renderCell={renderCell}
+            columns={COLUMN_LISTS_TICKET}
+            data={dataTicket || []}
+            emptyContent="No tickets found."
+            isLoading={isPendingTicket || isRefetchingTicket}
+            showSearch={false}
+            showLimit={false}
+            totalPages={1}
+          />
+        </CardBody>
+      </Card>
+      <AddTicketModal {...addTicketModal} refetchTicket={refetchTicket} />
+    </Fragment>
   );
 };
 
