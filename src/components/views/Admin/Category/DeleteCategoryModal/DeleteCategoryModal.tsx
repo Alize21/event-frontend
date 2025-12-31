@@ -37,8 +37,9 @@ const DeleteCategoryModal = ({
     if (isSuccessMutateDeleteCategory) {
       onClose();
       refetchCategory();
+      setSelectedId("");
     }
-  }, [isSuccessMutateDeleteCategory, refetchCategory, onClose]);
+  }, [isSuccessMutateDeleteCategory, refetchCategory, onClose, setSelectedId]);
 
   return (
     <Modal
