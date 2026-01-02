@@ -2,6 +2,7 @@ import environment from "@/config/environment";
 
 const endpoint = {
   AUTH: `${environment.API_URL}/auth`,
+  BANNER: `${environment.API_URL}/banners`,
   CATEGORY: `${environment.API_URL}/category`,
   MEDIA: `${environment.API_URL}/media`,
   EVENT: `${environment.API_URL}/events`,
