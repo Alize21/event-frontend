@@ -1,8 +1,6 @@
 import { ToasterContext } from "@/contexts/ToasterContext";
-
 import categoryServices from "@/services/category.service";
 import { ICategory } from "@/types/Category";
-
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext } from "react";
@@ -11,14 +9,14 @@ const useDetailCategory = () => {
   const { query, isReady } = useRouter();
   const { setToaster } = useContext(ToasterContext);
 
-  const getCategoryById = async (id: string) => {
-    const { data } = await categoryServices.getCategoryById(id);
+  const getCategoryById = async () => {
+    const { data } = await categoryServices.getCategoryById(`${query.id}`);
     return data.data;
   };
 
   const { data: dataCategory, refetch: refetchCategory } = useQuery({
     queryKey: ["Category"],
-    queryFn: () => getCategoryById(`${query.id}`),
+    queryFn: getCategoryById,
     enabled: isReady,
   });
 
