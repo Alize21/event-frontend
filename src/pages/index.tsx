@@ -1,13 +1,12 @@
-import PageHead from "@/components/commons/PageHead";
-import { Button } from "@heroui/react";
+import LandingPageLayout from "@/components/layouts/LandingPageLayout";
+import Home from "@/components/views/Home";
 
-export default function Home() {
+const HomePage = () => {
   return (
-    <div>
-      <main className="flex min-h-screen flex-col  items-center justify-between p-24">
-        <PageHead title="Home" />
-        <Button color="primary">Button</Button>;
-      </main>
-    </div>
+    <LandingPageLayout title="Home">
+      <Home />
+    </LandingPageLayout>
   );
-}
+};
+
+export default HomePage;
