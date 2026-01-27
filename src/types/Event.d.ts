@@ -10,8 +10,8 @@ interface IEvent {
   name?: string;
   slug?: string;
   category?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | DateValue;
+  endDate?: string | DateValue;
   isPublish?: boolean | string;
   isFeatured?: boolean | string;
   isOnline?: boolean | string;
@@ -26,8 +26,6 @@ interface IEvent {
 
 interface IEventForm extends IEvent {
   region?: string;
-  startDate?: DateValue;
-  endDate?: DateValue;
   address?: string;
   latitude?: string;
   longitude?: string;

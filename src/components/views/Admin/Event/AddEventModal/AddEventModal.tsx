@@ -192,27 +192,6 @@ const AddEventModal = ({
                   )}
                 />
                 <Controller
-                  name="isOnline"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      label="Status Online"
-                      variant="bordered"
-                      isInvalid={errors.isOnline !== undefined}
-                      errorMessage={errors.isOnline?.message}
-                      disallowEmptySelection
-                    >
-                      <SelectItem key="true" textValue="Online">
-                        Online
-                      </SelectItem>
-                      <SelectItem key="false" textValue="Offline">
-                        Offline
-                      </SelectItem>
-                    </Select>
-                  )}
-                />
-                <Controller
                   name="isFeatured"
                   control={control}
                   render={({ field }) => (
@@ -249,6 +228,27 @@ const AddEventModal = ({
               </div>
               <p className="text-sm font-bold">Location</p>
               <div className="mb-3 flex flex-col gap-4">
+                <Controller
+                  name="isOnline"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      label="Status Online"
+                      variant="bordered"
+                      isInvalid={errors.isOnline !== undefined}
+                      errorMessage={errors.isOnline?.message}
+                      disallowEmptySelection
+                    >
+                      <SelectItem key="true" textValue="Online">
+                        Online
+                      </SelectItem>
+                      <SelectItem key="false" textValue="Offline">
+                        Offline
+                      </SelectItem>
+                    </Select>
+                  )}
+                />
                 <Controller
                   name="region"
                   control={control}

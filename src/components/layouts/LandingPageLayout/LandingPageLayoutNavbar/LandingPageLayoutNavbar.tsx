@@ -84,14 +84,15 @@ const LandingPageLayoutNavbar = () => {
                   src={dataProfile?.profilePicture}
                   className="cursor-pointer"
                   showFallback
-                  name={dataProfile?.fullName}
                 />
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem
                   key="admin"
                   href="/admin/dashboard"
-                  className={cn({ hidden: dataProfile?.role !== "admin" })}
+                  className={cn({
+                    hidden: dataProfile?.role !== "admin",
+                  })}
                 >
                   Admin
                 </DropdownItem>

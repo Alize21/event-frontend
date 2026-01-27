@@ -1,5 +1,6 @@
 import AppShell from "@/components/commons/AppShell";
 import { ToasterProvider } from "@/contexts/ToasterContext";
+import { onErrorHandler } from "@/libs/axios/responseHandler";
 import "@/styles/globals.css";
 
 import { HeroUIProvider } from "@heroui/react";
@@ -12,6 +13,13 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
+      throwOnError(error) {
+        onErrorHandler(error);
+        return false;
+      },
+    },
+    mutations: {
+      onError: onErrorHandler,
     },
   },
 });
