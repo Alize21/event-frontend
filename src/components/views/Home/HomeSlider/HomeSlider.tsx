@@ -36,7 +36,7 @@ const HomeSlider = ({ banners, isLoadingBanners }: PropTypes) => {
                 alt={`${banner.title}`}
                 className="h-[80%] w-full rounded-2xl object-cover lg:h-[90%]"
                 width={1920}
-                height={1080}
+                height={800}
               />
             </SwiperSlide>
           ))}
