@@ -26,6 +26,7 @@ const Home = () => {
         title="Featured Events"
         events={dataFeaturedEvents?.data}
         isLoading={isLoadingFeaturedEvents}
+        urlMore="/event?isFeatured=true"
       />
       <Skeleton
         isLoaded={!isLoadingBanners}
