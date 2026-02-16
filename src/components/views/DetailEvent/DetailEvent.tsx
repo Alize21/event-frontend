@@ -1,0 +1,126 @@
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Skeleton,
+  Tab,
+  Tabs,
+} from "@heroui/react";
+import useDetailEvent from "./useDetailEvent";
+import { FaClock } from "react-icons/fa";
+import { convertTime } from "@/utils/date";
+import { FaLocationDot } from "react-icons/fa6";
+import Image from "next/image";
+import { ITicket } from "@/types/Ticket";
+import DetailEventTicket from "./DetailEventTicket";
+import DetailEventCart from "./DetailEventCart";
+
+const DetailEvent = () => {
+  const {
+    dataEvent,
+    dataTicket,
+    handleAddToCart,
+    handleChangeQuantity,
+    dataTicketInCart,
+    cart,
+  } = useDetailEvent();
+  return (
+    <div className="px-8 md:px-0">
+      <Skeleton isLoaded={!!dataEvent?.name} className="h-6 w-1/4 rounded-lg">
+        <Breadcrumbs>
+          <BreadcrumbItem href="/">Home</BreadcrumbItem>
+          <BreadcrumbItem href="/event">Events</BreadcrumbItem>
+          <BreadcrumbItem>{dataEvent?.name}</BreadcrumbItem>
+        </Breadcrumbs>
+      </Skeleton>
+
+      <section className="mt-4 flex flex-col gap-10 lg:flex-row">
+        <div className="w-full lg:w-4/6">
+          <Skeleton
+            isLoaded={!!dataEvent?.name}
+            className="mb-2 h-8 rounded-lg"
+          >
+            <h1 className="text-danger text-2xl font-semibold">
+              {dataEvent?.name}
+            </h1>
+          </Skeleton>
+          <Skeleton
+            className="mb-2 h-6 w-1/2 rounded-lg"
+            isLoaded={!!dataEvent?.startDate || !!dataEvent?.endDate}
+          >
+            <div className="text-foreground-500 flex items-center gap-4">
+              <FaClock width={16} />
+              <p>
+                {convertTime(dataEvent?.startDate)} -{" "}
+                {convertTime(dataEvent?.endDate)}
+              </p>
+            </div>
+          </Skeleton>
+          <Skeleton
+            className="mb-2 h-6 w-1/2 rounded-lg"
+            isLoaded={!!dataEvent?.isOnline || !!dataEvent?.location}
+          >
+            <div className="text-foreground-500 flex items-center gap-4">
+              <FaLocationDot width={16} />
+              <p>
+                {dataEvent?.isOnline ? "Online" : "Offline"}
+                {dataEvent?.isOnline
+                  ? ""
+                  : ` - ${dataEvent?.location?.address}`}
+              </p>
+            </div>
+          </Skeleton>
+          <Skeleton
+            className="mb-4 aspect-video w-full"
+            isLoaded={!!dataEvent?.banner}
+          >
+            <Image
+              alt="cover"
+              src={dataEvent?.banner && dataEvent?.banner}
+              className="aspect-video w-full rounded-lg object-cover"
+              width={1920}
+              height={1080}
+            />
+          </Skeleton>
+          <Tabs aria-label="Tab Detail Event" fullWidth>
+            <Tab key="Description" title="Description">
+              <h2 className="text-foreground-700 text-xl font-semibold">
+                About Event
+              </h2>
+              <Skeleton
+                isLoaded={!!dataEvent?.description}
+                className="mt-2 h-32 w-full rounded-lg"
+              >
+                <p className="text-foreground-500">{dataEvent?.description}</p>
+              </Skeleton>
+            </Tab>
+            <Tab key="Ticket" title="Ticket">
+              <h2 className="text-foreground-700 mb-2 text-xl font-semibold">
+                Ticket
+              </h2>
+
+              <div>
+                {dataTicket?.map((ticket: ITicket) => (
+                  <DetailEventTicket
+                    key={`ticket-${ticket._id}`}
+                    ticket={ticket}
+                    cart={cart}
+                    handleAddToCart={() => handleAddToCart(`${ticket._id}`)}
+                  />
+                ))}
+              </div>
+            </Tab>
+          </Tabs>
+        </div>
+        <div className="w-full lg:w-2/6">
+          <DetailEventCart
+            cart={cart}
+            dataTicketInCart={dataTicketInCart}
+            onChangeQuantity={handleChangeQuantity}
+          />
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default DetailEvent;
