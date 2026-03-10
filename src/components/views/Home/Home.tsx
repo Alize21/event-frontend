@@ -33,7 +33,7 @@ const Home = () => {
         className="mb-16 h-[20vw] w-full rounded-2xl px-6 lg:px-0"
       >
         <Image
-          src={dataBanners && dataBanners?.data[1]?.image}
+          src={(dataBanners && dataBanners?.data[1]?.image) || null}
           alt="banner"
           className="h-[20vw] w-full rounded-2xl object-cover object-center"
           width={1920}
