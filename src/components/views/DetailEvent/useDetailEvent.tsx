@@ -89,7 +89,13 @@ const useDetailEvent = () => {
       onSuccess: (result) => {
         const transactionToken = result.payment.token;
         /* eslint-disable @typescript-eslint/no-explicit-any */
-        (window as any).snap.pay(transactionToken);
+        (window as any).snap.pay(transactionToken, {
+          onSuccess: function (result: any) {
+            router.push(
+              `/payment/success?order_id=${result.order_id}&status_code=${result.status_code}$transaction_status=${result.transaction_status}`,
+            );
+          },
+        });
       },
     });
 
