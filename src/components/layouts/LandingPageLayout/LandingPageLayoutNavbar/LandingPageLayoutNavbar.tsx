@@ -175,15 +175,14 @@ const LandingPageLayoutNavbar = () => {
           ))}
           {session.status === "authenticated" ? (
             <Fragment>
-              <NavbarMenuItem>
+              <NavbarMenuItem
+                className={cn({
+                  hidden: dataProfile?.role !== "admin",
+                })}
+              >
                 <Link
-                  className={cn(
-                    "text-default-700 hover:text-danger font-medium",
-                    {
-                      hidden: dataProfile?.role !== "admin",
-                    },
-                  )}
                   href="/admin/event"
+                  className="text-default-700 hover:text-danger"
                 >
                   Admin
                 </Link>
